@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Member User ID Registration</title>
+    <style>
+        :root {
+            --primary-color: #10b981;
+            --secondary-color: #34d399;
+            --background-color: #0d1117;
+            --card-background: #161b22;
+            --text-color: #e6edf3;
+            --error-color: #f87171;
+            --border-color: #30363d;
+            --focus-color: rgba(16, 185, 129, 0.25);
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            max-width: 950px;
+            width: 100%;
+            padding: 30px;
+        }
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        .notice {
+            background-color: #21262d;
+            border-left: 4px solid var(--primary-color);
+            padding: 10px 15px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            color: #8b949e;
+        }
+        .required-note {
+            color: var(--error-color);
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #c9d1d9;
+        }
+        .required::after {
+            content: " *";
+            color: var(--error-color);
+        }
+        .hint {
+            font-size: 0.78rem;
+            color: #8b949e;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="email"], input[type="date"] {
+            width: 100%;
+            padding: 10px 12px;
+            background-color: #0d1117;
+            color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--focus-color);
+        }
+        input.invalid {
+            border-color: var(--error-color);
+            background-color: rgba(248, 113, 113, 0.1);
+        }
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.8rem;
+            margin-top: 4px;
+            display: none;
+        }
+        .section-header {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-top: 25px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+        .btn-submit {
+            background-color: var(--primary-color);
+            color: #0d1117;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: background-color 0.2s;
+        }
+        .btn-submit:hover {
+            background-color: var(--secondary-color);
+        }
+        .success-banner {
+            display: none;
+            background-color: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--primary-color);
+            color: var(--secondary-color);
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Online Member User ID Registration</h2>
+    <div id="successMessage" class="success-banner">Registration successful! Form validated.</div>
+    <div class="notice">
+        
+    </div>
+    <p class="required-note">* Required Field</p>
+    <form id="registrationForm" novalidate>
+        <div class="form-group">
+            <label for="crn" class="required">CRN / SS Number</label>
+            <input type="text" id="crn" placeholder="e.g., 00-0000000-0">
+            <div class="error-message" id="crnError">CRN/SS Number is required.</div>
+        </div>
+        <div class="form-group">
+            <label for="email" class="required">Email Address</label>
+            <input type="email" id="email" placeholder="name@example.com">
+            <div class="error-message" id="emailError">Please enter a valid email address.</div>
+        </div>
+        <div class="form-group">
+            <label for="confirmEmail" class="required">Confirm Email Address</label>
+            <input type="email" id="confirmEmail">
+            <div class="error-message" id="confirmEmailError">Email addresses do not match.</div>
+        </div>
+        <div class="form-group">
+            <label for="userId" class="required">Preferred User ID</label>
+            <div class="hint">Length must be 8-20 characters. First character must be alphabetic. No special characters except underscore (_). (Ex. Juan_Cruz1234)</div>
+            <input type="text" id="userId">
+            <div class="error-message" id="userIdError">Invalid User ID format.</div>
+        </div>
+        <div class="form-group">
+            <label for="confirmUserId" class="required">Confirm Preferred User ID</label>
+            <div class="hint">The following characters are not allowed: # % ( ) \ -- ' " & | \ /</div>
+            <input type="text" id="confirmUserId">
+            <div class="error-message" id="confirmUserIdError">User IDs do not match.</div>
+        </div>
+        <div class="form-group">
+            <label for="lastName" class="required">Surname / Last Name</label>
+            <input type="text" id="lastName">
+            <div class="error-message" id="lastNameError">Surname is required.</div>
+        </div>
+        <div class="form-group">
+            <label for="firstName" class="required">Given Name</label>
+            <input type="text" id="firstName">
+            <div class="error-message" id="firstNameError">Given Name is required.</div>
+        </div>
+        <div class="form-group">
+            <label for="middleName">Middle Name</label>
+            <input type="text" id="middleName">
+        </div>
+        <div class="form-group">
+            <label for="dob" class="required">Date of Birth</label>
+            <input type="date" id="dob">
+            <div class="error-message" id="dobError">Please select your date of birth.</div>
+        </div>
+        <div class="section-header">Mailing Address (Philippine Address)</div>
+        <div class="form-group">
+            <label for="roomNo">Room / Floor / Unit No. & Building Name</label>
+            <input type="text" id="roomNo">
+        </div>
+        <div class="form-group">
+            <label for="houseNo">House / Lot & Block No.</label>
+            <input type="text" id="houseNo">
+        </div>
+        <div class="form-group">
+            <label for="street">Street</label>
+            <input type="text" id="street">
+        </div>
+        <button type="submit" class="btn-submit">Submit Registration</button>
+    </form>
+</div>
+<script>
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        let isValid = true;
+        function checkField(inputId, errorId, condition) {
+            const input = document.getElementById(inputId);
+            const error = document.getElementById(errorId);
+            if (condition) {
+                input.classList.add('invalid');
+                error.style.display = 'block';
+                isValid = false;
+            } else {
+                input.classList.remove('invalid');
+                error.style.display = 'none';
+            }
+        }
+        const crn = document.getElementById('crn').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const confirmEmail = document.getElementById('confirmEmail').value.trim();
+        const userId = document.getElementById('userId').value.trim();
+        const confirmUserId = document.getElementById('confirmUserId').value.trim();
+        const lastName = document.getElementById('lastName').value.trim();
+        const firstName = document.getElementById('firstName').value.trim();
+        const dob = document.getElementById('dob').value;
+        checkField('crn', 'crnError', !crn);
+        checkField('email', 'emailError', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+        checkField('confirmEmail', 'confirmEmailError', !confirmEmail || email !== confirmEmail);
+        checkField('userId', 'userIdError', !/^[a-zA-Z][a-zA-Z0-9_]{7,19}$/.test(userId));
+        checkField('confirmUserId', 'confirmUserIdError', !confirmUserId || userId !== confirmUserId);
+        checkField('lastName', 'lastNameError', !lastName);
+        checkField('firstName', 'firstNameError', !firstName);
+        checkField('dob', 'dobError', !dob);
+        if (isValid) {
+            document.getElementById('successMessage').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            document.getElementById('successMessage').style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>
